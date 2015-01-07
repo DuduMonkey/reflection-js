@@ -1,0 +1,26 @@
+{
+  "name": "reflection-js",
+  "version": "0.0.1",
+  "description": "A reflection library for JavaScript",
+  "main": "./lib/reflection.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/poliveira/reflection-js.git"
+  },
+  "keywords": [
+    "reflection",
+    "reflection-js"
+  ],
+  "author": "Pablo Oliveira <pablo.oliveira@outlook.com.br>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/poliveira/reflection-js/issues"
+  },
+  "homepage": "https://github.com/poliveira/reflection-js",
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  }
+}
