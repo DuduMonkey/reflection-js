@@ -8,11 +8,15 @@ describe("Reflection", function () {
             var obj = {
                 a: function () {
                     return "cool";
+                },
+                b: function (x, y) {
+                    return x + y;
                 }
             };
 
             assert.strictEqual(reflection(obj).call("a"), "cool");
-            assert.strictEqual(reflection(obj).call("b"), undefined);
+            assert.strictEqual(reflection(obj).call("b", 1, 2), 3);
+            assert.strictEqual(reflection(obj).call("c"), undefined);
         });
     });
     
