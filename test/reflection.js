@@ -20,6 +20,47 @@ describe("Reflection", function () {
         });
     });
     
+    describe("#get()", function () {
+        it("should get a reference to the property", function () {
+            var obj = {
+                a: function () {
+                    return "a";
+                },
+                b: function (x, y) {
+                    return x + y;
+                },
+                c: "c",
+                d: {
+                    a: "d.a"
+                }
+            };
+
+            assert.strictEqual(reflection(obj).get("a"), obj.a);
+            assert.strictEqual(reflection(obj).get("a")(), "a");
+            assert.strictEqual(reflection(obj).get("b"), obj.b);
+            assert.strictEqual(reflection(obj).get("b")(1, 1), 2);
+            assert.strictEqual(reflection(obj).get("c"), obj.c);
+            assert.strictEqual(reflection(obj).get("c"), "c");
+            assert.strictEqual(reflection(obj).get("d.a"), obj.d.a);
+            assert.strictEqual(reflection(obj).get("d.a"), "d.a");
+            assert.strictEqual(reflection(obj).get("z"), undefined);
+        });
+    });
+    
+    describe("#methods()", function () {
+        it("should return an array with all object methods", function () {
+            var obj = {
+                a: "a",
+                fa: function () {},
+                fb: function () {}
+            };
+
+            var methods = reflection(obj).methods();
+
+            assert.deepEqual(methods, ["fa", "fb"]);
+        });
+    });
+    
     describe("#owns()", function () {
         it("should return true when the object owns a property, otherwise false", function () {
             var obj = {
@@ -44,20 +85,6 @@ describe("Reflection", function () {
         });
     });
     
-    describe("#methods()", function () {
-        it("should return an array with all object methods", function () {
-            var obj = {
-                a: "a",
-                fa: function () {},
-                fb: function () {}
-            };
-
-            var methods = reflection(obj).methods();
-
-            assert.deepEqual(methods, ["fa", "fb"]);
-        });
-    });
-
     describe("#properties()", function () {
         it("should return an array with all object properties", function () {
             var obj = {
