@@ -2,6 +2,8 @@
 
 [![Build Status](https://api.travis-ci.org/poliveira/reflection-js.png)](https://api.travis-ci.org/poliveira/reflection-js)
 
+Although there are no classes in JavaScript, therefore the term "reflection" wouldn't be very accurate, this is an attempt to bring some of the features of languages like C# and Java to JavaScript.
+
 ## Getting Started
 Install the module with: `npm install require-js`
 
