@@ -11,7 +11,7 @@ var reflection = require("reflection-js");
 
 ## Documentation
 
-#### call(functionName, [args])
+#### `call(functionName, [args])`
 Execute a function by name.
 
 ```javascript
@@ -28,7 +28,7 @@ reflection(obj).call("print"); // "it works!"
 reflection(obj).call("sum", 5, 5); // 10
 ```
 
-#### clone()
+#### `clone()`
 Creates an exact copy of the object without keeping a reference to it.
 
 ```javascript
@@ -43,7 +43,7 @@ console.log(obj.a); // "a"
 console.log(copy.a); // "b"
 ```
 
-#### get(propertyName)
+#### `get(propertyName)`
 Returns a reference to a property. Also accepts a namespace as argument like `"my.cool.namespace"`.
 
 ```javascript
@@ -73,7 +73,7 @@ ref = reflection(obj).get("print");
 ref(); // "jose"
 ```
 
-#### methods()
+#### `methods()`
 Returns an array with all methods names. In this case, properties are ignored.
 
 ```javascript
@@ -91,7 +91,7 @@ var methods = reflection(obj).methods();
 console.log(methods); // ["print", "sayHello"]
 ```
 
-#### owns(propertyName)
+#### `owns(propertyName)`
 Check if the object owns a property. Also accepts a namespace as argument like `"my.cool.namespace"`.
 
 ```javascript
@@ -107,7 +107,7 @@ reflection(obj).owns("company.name"); // true
 reflection(obj).owns("age"); // false
 ```
 
-#### properties()
+#### `properties()`
 Returns an array with all properties names. In this case, methods are ignored.
 
 ```javascript
@@ -123,7 +123,7 @@ var properties = reflection(obj).properties();
 console.log(properties); // ["name", "age"]
 ```
 
-#### set(propertyName, value)
+#### `set(propertyName, value)`
 Sets a property value. If the property does not exists, it will be created, even if it is an nested property.
 Also accepts a namespace as argument like `"my.cool.namespace"`.
 
