@@ -42,8 +42,14 @@ describe("Reflection", function () {
             assert.strictEqual(reflection(obj).get("c"), obj.c);
             assert.strictEqual(reflection(obj).get("c"), "c");
             assert.strictEqual(reflection(obj).get("d.a"), obj.d.a);
-            assert.strictEqual(reflection(obj).get("d.a"), "d.a");
+            assert.strictEqual(reflection(obj).get("d.a"), "d.a"); 
+        });
+        
+        it("should undefined if the property does not exists", function () {
+            var obj = {};
+            
             assert.strictEqual(reflection(obj).get("z"), undefined);
+            assert.strictEqual(reflection(obj).get(null), undefined);
         });
     });
     
@@ -58,6 +64,16 @@ describe("Reflection", function () {
             var methods = reflection(obj).methods();
 
             assert.deepEqual(methods, ["fa", "fb"]);
+        });
+        
+        it("should return an empty array if the object does not hava any methods", function () {
+            var obj = {
+                a: "a"
+            };
+
+            var methods = reflection(obj).methods();
+
+            assert.deepEqual(methods, []);
         });
     });
     
@@ -82,6 +98,7 @@ describe("Reflection", function () {
             assert.strictEqual(reflection(obj).owns("c.a.a"), true);
             assert.strictEqual(reflection(obj).owns("c.a.z"), false);
             assert.strictEqual(reflection(obj).owns("z"), false);
+            assert.strictEqual(reflection(obj).owns(null), false);
         });
     });
     
@@ -97,6 +114,16 @@ describe("Reflection", function () {
             var properties = reflection(obj).properties();
 
             assert.deepEqual(properties, ["a", "b", "c"]);
+        });
+        
+        it("should return an empty array if the object does not have any properties", function () {
+            var obj = {
+                fa: function () {}
+            };
+
+            var properties = reflection(obj).properties();
+
+            assert.deepEqual(properties, []);
         });
     });
     
@@ -114,6 +141,7 @@ describe("Reflection", function () {
             reflection(obj).set("b", "b");
             reflection(obj).set("c.b", "c.b");
             reflection(obj).set("d.a.b.c.d.e", "d.a.b.c.d.e");
+            reflection(obj).set(null, null);
 
             assert.strictEqual(obj.b, "b");
             assert.strictEqual(obj.c.b, "c.b");
