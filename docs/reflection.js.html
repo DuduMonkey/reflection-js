@@ -31,15 +31,18 @@
  * @license      {@link https://github.com/poliveira/reflection-js/blob/master/LICENSE|MIT License}
  */
 
+/**
+ * @class reflection
+ */
 (function () {
     "use strict";
 
     var reflection = (function () {
-
-        /**
-         * @module reflection
-         */
         var reflection = function (obj) {
+            if (obj === undefined || obj === null) {
+                return obj;
+            }
+
             return {
 
                 /**
@@ -59,6 +62,7 @@
                  * @param {string} property
                  * @param {boolean} [createIfNotExists] - Flag whom determines if the property
                  *                                        should be created if it not exists
+                 * @private
                  */
                 _getPropertyReference: function (property, createIfNotExists) {
                     var namespaces = property.split(".");
@@ -81,6 +85,11 @@
                 },
 
                 /**
+                 * Returns an array of all object properties, respecting the filters
+                 * provided.
+                 *
+                 * @method _getProperties
+                 * @memberof reflection
                  * @private
                  */
                 _getProperties: function (obj, exclude, include) {
@@ -99,6 +108,9 @@
                         }
 
                         for (var i = 0; i &lt; exclude.length; i++) {
+
+                            // If this property type is any of the excluded
+                            // ones, skip to the next one
                             if (typeof obj[property] === exclude[i]) {
                                 skip = true;
                                 break;
@@ -111,6 +123,9 @@
 
                         if (include.length > 0) {
                             for (var i = 0; i &lt; include.length; i++) {
+
+                                // Include the property if its type is one
+                                // of the included types
                                 if (typeof obj[property] === include[i]) {
                                     properties.push(property);
                                 }
@@ -125,26 +140,69 @@
                 },
 
                 /**
-                 * Runs a function
-                 * @param {string} functionName
+                 * Runs a function by name.
                  *
+                 * @method call
+                 * @memberof reflection
+                 * @param {string} functionName
+                 * @param {Array} [args]
                  */
                 call: function (functionName) {
-                    if (!this.owns(functionName)) {
+                    if (!functionName || !this.owns(functionName)) {
                         return;
                     }
 
                     var args = [].slice.call(arguments).splice(1);
 
+                    // Creates an array containing all namespace
+                    // levels
                     var namespaces = functionName.split(".");
+
+                    // Picks the last name in the namespaces so
+                    // it can be called below within the reference
+                    // of the current context
                     var fn = namespaces.pop();
+
+                    // Context is created at the top level
+                    // of the current object
                     var context = this._obj;
 
+                    // Iterates through the namespace array, updateing
+                    // the context reference in each iteration. Get out
+                    // of the loop one step earlier to keep the reference
+                    // to the context
                     for (var i = 0; i &lt; namespaces.length; i++) {
+
+                        // Set context to the current namespace
                         context = context[namespaces[i]];
                     }
 
-                    return context[fn](args);
+                    return context[fn].apply(this, args);
+                },
+
+                /**
+                 * Clones the object and remove its reference.
+                 *
+                 * @method clone
+                 * @memberof reflection
+                 * @return {object} - A clone of the current object
+                 */
+                clone: function () {
+                    if (typeof this._obj !== "object") {
+                        return;
+                    }
+
+                    if (!Object.create) {
+                        Object.create = function (obj) {
+                            var fn = function () {};
+
+                            fn.prototype = obj;
+
+                            return new fn();
+                        };
+                    }
+
+                    return Object.create((this._obj));;
                 },
 
                 /**
@@ -152,13 +210,18 @@
                  *
                  * @method get
                  * @memberof reflection
+                 * @param {string} property - The property name
                  */
                 get: function (property) {
+                    if (!property) {
+                        return;
+                    }
+
                     return this._getPropertyReference(property, false);
                 },
 
                 /**
-                 * Returns an Array contaning all the methods names
+                 * Returns an Array contaning all the methods names.
                  *
                  * @method methods
                  * @memberof reflection
@@ -177,6 +240,9 @@
                  * @return {boolean}
                  */
                 owns: function (property) {
+                    if (!property) {
+                        return false;
+                    }
 
                     // Gets a reference for the property
                     var ref = this._getPropertyReference(property, false);
@@ -185,7 +251,7 @@
                 },
 
                 /**
-                 * Returns an Array contaning all the property names
+                 * Returns an Array contaning all the property names.
                  *
                  * @method properties
                  * @memberof reflection
@@ -196,7 +262,8 @@
                 },
 
                 /**
-                 * Sets the value of a given property
+                 * Sets the value of a given property. If the property does not exists, it
+                 * will created, even if it is a nested property.
                  *
                  * @method set
                  * @memberof reflection
@@ -205,6 +272,9 @@
                  * @return {undefined}
                  */
                 set: function (property, value) {
+                    if (!property) {
+                        return;
+                    }
 
                     // TODO: should find a way to use the _getPropertyReference method
                     //       and keep a reference to the object
@@ -212,6 +282,9 @@
                     var context = this._obj;
 
                     for (var i = 0; i &lt; namespaces.length - 1; i++) {
+
+                        // Create the property if the object does not 
+                        // have it
                         if (!context.hasOwnProperty(namespaces[i])) {
                             context[namespaces[i]] = {};
                         }
@@ -232,8 +305,7 @@
     } else {
         window.reflection = reflection;
     }
-})();
-//module.exports = reflection;</code></pre>
+})();</code></pre>
         </article>
     </section>
 
@@ -243,13 +315,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-reflection.html">reflection</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="reflection.html">reflection</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Wed Jan 07 2015 19:36:49 GMT-0200 (Horário brasileiro de verão)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha5</a> on Thu Jan 08 2015 18:19:26 GMT-0200 (Horário brasileiro de verão)
 </footer>
 
 <script> prettyPrint(); </script>
