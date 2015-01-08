@@ -28,6 +28,21 @@ reflection(obj).call("print"); // "it works!"
 reflection(obj).call("sum", 5, 5); // 10
 ```
 
+#### clone()
+Creates an exact copy of the object without keeping a reference to it.
+
+```javascript
+var obj = {
+  a: "a"
+};
+
+var copy = reflection(obj).clone();
+copy.a = "b";
+
+console.log(obj.a); // "a"
+console.log(copy.a); // "b"
+```
+
 #### get(propertyName)
 Returns a reference to a property. Also accepts a namespace as argument like `"my.cool.namespace"`.
 
