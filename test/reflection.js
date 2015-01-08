@@ -20,6 +20,48 @@ describe("Reflection", function () {
         });
     });
     
+    describe("#clone()", function () {
+        it("should create an exact copy of the object", function () {
+            var obj = {
+                a: function () {
+                    return "cool";
+                },
+                b: 1,
+                c: {
+                    a: {
+                        a: "nested stuff"
+                    }
+                }
+            };
+
+            var copy = reflection(obj).clone();
+            
+            assert.strictEqual(copy.a, obj.a);
+            assert.strictEqual(copy.c.a.a, obj.c.a.a);
+        });
+        
+        it("should work without Object.create", function () {
+            var obj = {
+                a: function () {
+                    return "cool";
+                },
+                b: 1,
+                c: {
+                    a: {
+                        a: "nested stuff"
+                    }
+                }
+            };
+
+            Object.create = null;
+            
+            var copy = reflection(obj).clone();
+            
+            assert.strictEqual(copy.a, obj.a);
+            assert.strictEqual(copy.c.a.a, obj.c.a.a);
+        });
+    });
+    
     describe("#get()", function () {
         it("should get a reference to the property", function () {
             var obj = {
@@ -51,6 +93,20 @@ describe("Reflection", function () {
             assert.strictEqual(reflection(obj).get("z"), undefined);
             assert.strictEqual(reflection(obj).get(null), undefined);
         });
+        
+        it("should be able to run an method by reference", function () {
+            var obj = {
+                a: function (text) {
+                    text = text || "a";
+                    return text;
+                }
+            };
+            
+            var ref = reflection(obj).get("a");
+            
+            assert.strictEqual(ref(), "a");
+            assert.strictEqual(ref("b"), "b");
+        });
     });
     
     describe("#methods()", function () {
@@ -66,7 +122,7 @@ describe("Reflection", function () {
             assert.deepEqual(methods, ["fa", "fb"]);
         });
         
-        it("should return an empty array if the object does not hava any methods", function () {
+        it("should return an empty array if the object does not have any methods", function () {
             var obj = {
                 a: "a"
             };
