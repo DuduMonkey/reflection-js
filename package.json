@@ -1,6 +1,6 @@
 {
   "name": "reflection-js",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "A reflection library for JavaScript",
   "main": "./lib/reflection.js",
   "scripts": {
