@@ -109,7 +109,7 @@ console.log(properties); // ["name", "age"]
 ```
 
 #### set(propertyName, value)
-Sets an property value. If the property does not exists, it will be created, even if it is an nested property.
+Sets a property value. If the property does not exists, it will be created, even if it is an nested property.
 Also accepts a namespace as argument like `"my.cool.namespace"`.
 
 ```javascript
