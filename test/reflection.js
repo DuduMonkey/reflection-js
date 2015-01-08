@@ -60,6 +60,18 @@ describe("Reflection", function () {
             assert.strictEqual(copy.a, obj.a);
             assert.strictEqual(copy.c.a.a, obj.c.a.a);
         });
+        
+        it("should not keep a reference to the original object", function () {
+            var obj = {
+                a: "a"
+            };
+            
+            var copy = reflection(obj).clone();
+            copy.a = "b";
+            
+            assert.strictEqual(obj.a, "a");
+            assert.strictEqual(copy.a, "b");
+        });
     });
     
     describe("#get()", function () {
