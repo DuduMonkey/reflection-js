@@ -31,6 +31,7 @@
     "mocha": "^2.1.0"
   },
   "dependencies": {
-    "codecov.io": "0.0.8"
+    "codecov.io": "0.0.8",
+    "mocha-lcov-reporter": "0.0.1"
   }
 }
