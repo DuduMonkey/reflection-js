@@ -148,6 +148,27 @@ reflection(obj).set("company.website", "www.getreflectors.com");
 console.log(obj.company.website); // "www.getreflectors.com"
 ```
 
+#### `type()`
+Returns a string containing the type of the current object.
+
+```javascript
+var obj = {};
+
+var type;
+
+type = reflection(obj).type();
+console.log(type); // "Object"
+
+type = reflection(null).type();
+console.log(type); // "Null"
+
+type = reflection(1).type();
+console.log(type); // "Number"
+
+type = reflection(/abc/).type();
+console.log(type); // "RegExp"
+```
+
 ## License
 
 The MIT License (MIT)
