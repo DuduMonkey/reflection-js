@@ -6,7 +6,7 @@
 Although there are no classes in JavaScript, therefore the term "reflection" wouldn't be very accurate, this is an attempt to bring some of the features from languages like C# and Java to JavaScript.
 
 ## Getting Started
-Install the module with: `npm install require-js`
+Install the module with: `npm install --save require-js`
 
 ```javascript
 var reflection = require("reflection-js");
