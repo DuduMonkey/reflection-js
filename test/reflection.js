@@ -16,7 +16,24 @@ describe("Reflection", function () {
 
             assert.strictEqual(reflection(obj).call("a"), "cool");
             assert.strictEqual(reflection(obj).call("b", 1, 2), 3);
-            assert.strictEqual(reflection(obj).call("c"), undefined);
+        });
+        
+        it("should return undefined if the function does not exists", function () {
+            var obj = { };
+
+            assert.strictEqual(reflection(obj).call("a"), undefined);
+        });
+        
+        it("should work with namespaces", function () {
+            var obj = {
+                a: {
+                    a: function () {
+                        return true;
+                    }
+                }
+            };
+
+            assert.strictEqual(reflection(obj).call("a.a"), true);
         });
     });
 
@@ -73,11 +90,11 @@ describe("Reflection", function () {
             assert.strictEqual(copy.a, "b");
         });
 
-//        it("should return null if the paremeter is null", function () {
-//            var copy = reflection(null).clone();
-//
-//            assert.strictEqual(copy, null);
-//        });
+        it("should return null if the paremeter is null", function () {
+            var copy = reflection(null).clone();
+
+            assert.strictEqual(copy, null);
+        });
     });
 
     describe("#get()", function () {
@@ -252,7 +269,7 @@ describe("Reflection", function () {
     });
 
     describe("#type()", function () {
-        it("should return as string with the object's type name", function () {
+        it("should return a string with the object's type name", function () {
             assert.strictEqual(reflection([]).type(), "Array");
             assert.strictEqual(reflection(true).type(), "Boolean");
             assert.strictEqual(reflection(new Date()).type(), "Date");
